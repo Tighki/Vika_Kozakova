@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="/images/logo-mark.svg" type="image/svg+xml">
 </head>
 <body>
   <div class="app-shell">
@@ -19,7 +19,7 @@
       </a>
       <nav class="sidebar-nav">
         <a href="/documents" class="nav-link <%= title === 'Документы' ? 'active' : '' %>">
-          <%- include('partials/icon', { icon: 'documents' }) %>
+          <%- include('partials/icon', { icon: 'file' }) %>
           <span class="nav-label">Документы</span>
         </a>
         <a href="/documents/new" class="nav-link">

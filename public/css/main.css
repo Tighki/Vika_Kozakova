@@ -4,7 +4,6 @@
   --primary: #3028de;
   --secondary: #847ef5;
   --accent: #514afd;
-  --primary-dark: #2620b8;
   --surface: #ffffff;
   --border: #e4e4f0;
   --muted: #5c5c72;
@@ -217,12 +216,6 @@ a:hover {
   max-width: 880px;
 }
 
-.page-container:has(.form-wide) .page-header {
-  max-width: 880px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
 /* Auth */
 .auth-body {
   background: linear-gradient(135deg, var(--background) 0%, #e8e8fc 50%, rgba(132, 126, 245, 0.25) 100%);
@@ -249,12 +242,6 @@ a:hover {
 .auth-header {
   text-align: center;
   margin-bottom: 2rem;
-}
-
-.brand-icon-lg {
-  font-size: 2.5rem;
-  display: block;
-  margin-bottom: 0.5rem;
 }
 
 .auth-header p {
@@ -486,6 +473,10 @@ a:hover {
 
 .alert ul {
   list-style: none;
+}
+
+.alert[hidden] {
+  display: none;
 }
 
 .toast {

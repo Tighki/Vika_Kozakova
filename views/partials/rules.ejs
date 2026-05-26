@@ -1,0 +1,10 @@
+<fieldset class="rules-fieldset">
+  <legend>Правила проверки</legend>
+  <p class="rules-hint"><%= hint %></p>
+  <% rules.forEach(id => { %>
+  <label class="checkbox-label">
+    <input type="checkbox" name="rules_<%= id %>" value="on" <%= enabledRules.includes(id) ? 'checked' : '' %>>
+    <%= ruleLabels[id] %>
+  </label>
+  <% }) %>
+</fieldset>

@@ -6,16 +6,10 @@
   <a href="/documents" class="btn btn-ghost">← Назад</a>
 </div>
 
-<% if (errors && errors.length) { %>
-<div class="alert alert-error">
-  <ul><% errors.forEach(e => { %><li><%= e %></li><% }) %></ul>
-</div>
-<% } %>
+<%- include('../partials/errors') %>
 
-<form method="POST"
-  action="<%= document ? '/documents/' + document.id + '/edit' : '/documents/new' %>"
-  class="form form-wide" id="document-form" data-validate="document">
-
+<form method="POST" action="<%= document ? '/documents/' + document.id + '/edit' : '/documents/new' %>"
+  class="form form-wide" id="document-form">
   <div class="form-row">
     <div class="form-group">
       <label for="title">Заголовок *</label>
@@ -23,11 +17,9 @@
     </div>
     <div class="form-group">
       <label for="doc_number">Номер документа *</label>
-      <input type="text" id="doc_number" name="doc_number" value="<%= form.doc_number || '' %>"
-        placeholder="ВХ-2026-001" required>
+      <input type="text" id="doc_number" name="doc_number" value="<%= form.doc_number || '' %>" placeholder="ВХ-2026-001" required>
     </div>
   </div>
-
   <div class="form-row">
     <div class="form-group">
       <label for="type">Тип документа *</label>
@@ -42,37 +34,23 @@
       <select id="assignee_id" name="assignee_id">
         <option value="">— не назначен —</option>
         <% users.forEach(u => { %>
-        <option value="<%= u.id %>" <%= String(form.assignee_id) === String(u.id) ? 'selected' : '' %>>
-          <%= u.full_name %> (<%= u.email %>)
-        </option>
+        <option value="<%= u.id %>" <%= String(form.assignee_id) === String(u.id) ? 'selected' : '' %>><%= u.full_name %> (<%= u.email %>)</option>
         <% }) %>
       </select>
     </div>
   </div>
-
   <div class="form-group">
     <label for="content">Содержание документа</label>
     <textarea id="content" name="content" rows="8"><%= form.content || '' %></textarea>
   </div>
-
-  <fieldset class="rules-fieldset">
-    <legend>Правила проверки</legend>
-    <p class="rules-hint">Отметьте правила — данные будут проверены перед сохранением.</p>
-    <% documentRules.forEach(ruleId => { %>
-    <label class="checkbox-label">
-      <input type="checkbox" name="rules_<%= ruleId %>" value="on"
-        <%= enabledRules.includes(ruleId) ? 'checked' : '' %>>
-      <%= ruleLabels[ruleId] %>
-    </label>
-    <% }) %>
-  </fieldset>
-
-  <div id="client-errors" class="alert alert-error" style="display:none"></div>
-
+  <%- include('../partials/rules', {
+    rules: documentRules,
+    enabledRules: enabledRules || documentRules,
+    hint: 'Отметьте правила — данные будут проверены перед сохранением.'
+  }) %>
+  <div id="client-errors" class="alert alert-error" hidden></div>
   <div class="form-actions">
-    <button type="submit" class="btn btn-primary">
-      <%= document ? 'Сохранить изменения' : 'Создать документ' %>
-    </button>
+    <button type="submit" class="btn btn-primary"><%= document ? 'Сохранить' : 'Создать документ' %></button>
     <a href="/documents" class="btn btn-ghost">Отмена</a>
   </div>
 </form>

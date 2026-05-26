@@ -1,10 +1,6 @@
-<% if (errors && errors.length) { %>
-<div class="alert alert-error">
-  <ul><% errors.forEach(e => { %><li><%= e %></li><% }) %></ul>
-</div>
-<% } %>
+<%- include('../partials/errors') %>
 
-<form method="POST" action="/register" class="form" id="register-form" data-validate="register">
+<form method="POST" action="/register" class="form" id="register-form">
   <div class="form-group">
     <label for="email">Email</label>
     <input type="email" id="email" name="email" value="<%= form.email || '' %>" required>
@@ -21,23 +17,13 @@
     <label for="password_confirm">Подтверждение пароля</label>
     <input type="password" id="password_confirm" name="password_confirm" required>
   </div>
-
-  <fieldset class="rules-fieldset">
-    <legend>Правила проверки</legend>
-    <p class="rules-hint">Отметьте правила — форма будет проверена по ним перед отправкой.</p>
-    <% registerRules.forEach(ruleId => { %>
-    <label class="checkbox-label">
-      <input type="checkbox" name="rules_<%= ruleId %>" value="on"
-        <%= enabledRules.includes(ruleId) ? 'checked' : '' %>>
-      <%= ruleLabels[ruleId] %>
-    </label>
-    <% }) %>
-  </fieldset>
-
-  <div id="client-errors" class="alert alert-error" style="display:none"></div>
+  <%- include('../partials/rules', {
+    rules: registerRules,
+    enabledRules: enabledRules || registerRules,
+    hint: 'Отметьте правила — форма будет проверена по ним перед отправкой.'
+  }) %>
+  <div id="client-errors" class="alert alert-error" hidden></div>
   <button type="submit" class="btn btn-primary btn-block">Зарегистрироваться</button>
 </form>
 
-<p class="auth-footer">
-  Уже есть аккаунт? <a href="/login">Войти</a>
-</p>
+<p class="auth-footer">Уже есть аккаунт? <a href="/login">Войти</a></p>
