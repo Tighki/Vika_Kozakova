@@ -14,10 +14,35 @@ const PORT = process.env.PORT || 3000;
 const HOST = process.env.HOST || '0.0.0.0';
 const isProduction = process.env.NODE_ENV === 'production';
 
-if (!process.env.SESSION_SECRET && isProduction) {
-  console.error('Ошибка: задайте переменную окружения SESSION_SECRET');
-  process.exit(1);
+function getSessionSecret() {
+  if (process.env.SESSION_SECRET) {
+    return process.env.SESSION_SECRET;
+  }
+
+  if (isProduction && process.env.RENDER) {
+    const derived = [
+      'docflow',
+      process.env.RENDER_SERVICE_ID,
+      process.env.RENDER_GIT_COMMIT,
+    ]
+      .filter(Boolean)
+      .join(':');
+    console.warn(
+      'SESSION_SECRET не задан. Используется ключ для Render. ' +
+        'Рекомендуется добавить SESSION_SECRET в Environment (Generate).'
+    );
+    return derived;
+  }
+
+  if (isProduction) {
+    console.error('Ошибка: задайте переменную окружения SESSION_SECRET');
+    process.exit(1);
+  }
+
+  return 'docflow-dev-secret-change-in-production';
 }
+
+const sessionSecret = getSessionSecret();
 
 initDatabase();
 
@@ -36,7 +61,7 @@ app.use(express.json());
 
 app.use(
   session({
-    secret: process.env.SESSION_SECRET || 'docflow-dev-secret-change-in-production',
+    secret: sessionSecret,
     resave: false,
     saveUninitialized: false,
     cookie: {
