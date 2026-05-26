@@ -1,0 +1,58 @@
+<div class="page-header">
+  <div>
+    <h1>Документы</h1>
+    <p class="page-subtitle">Управление документооборотом организации</p>
+  </div>
+  <a href="/documents/new" class="btn btn-primary btn-icon-text">
+    <%- include('../partials/icon', { icon: 'plus', iconSize: 18 }) %> Новый документ
+  </a>
+</div>
+
+<form method="GET" action="/documents" class="filters-bar">
+  <input type="text" name="q" placeholder="Поиск по названию или номеру..." value="<%= filters.q %>">
+  <select name="status">
+    <option value="">Все статусы</option>
+    <% Object.entries(statusLabels).forEach(([val, label]) => { %>
+    <option value="<%= val %>" <%= filters.status === val ? 'selected' : '' %>><%= label %></option>
+    <% }) %>
+  </select>
+  <select name="type">
+    <option value="">Все типы</option>
+    <% Object.entries(typeLabels).forEach(([val, label]) => { %>
+    <option value="<%= val %>" <%= filters.type === val ? 'selected' : '' %>><%= label %></option>
+    <% }) %>
+  </select>
+  <button type="submit" class="btn btn-secondary">Найти</button>
+  <% if (filters.q || filters.status || filters.type) { %>
+  <a href="/documents" class="btn btn-ghost">Сбросить</a>
+  <% } %>
+</form>
+
+<% if (!documents.length) { %>
+<div class="empty-state">
+  <span class="empty-icon"><%- include('../partials/icon', { icon: 'inbox', iconSize: 48 }) %></span>
+  <h3>Документов не найдено</h3>
+  <p>Создайте первый документ или измените фильтры поиска.</p>
+  <a href="/documents/new" class="btn btn-primary">Создать документ</a>
+</div>
+<% } else { %>
+<div class="doc-grid">
+  <% documents.forEach(doc => { %>
+  <a href="/documents/<%= doc.id %>" class="doc-card">
+    <div class="doc-card-header">
+      <span class="badge badge-<%= doc.status %>"><%= statusLabels[doc.status] %></span>
+      <span class="badge badge-type"><%= typeLabels[doc.type] %></span>
+    </div>
+    <h3 class="doc-card-title"><%= doc.title %></h3>
+    <p class="doc-card-number"><%= doc.doc_number %></p>
+    <div class="doc-card-meta">
+      <span>Автор: <%= doc.author_name %></span>
+      <% if (doc.assignee_name) { %>
+      <span>Исполнитель: <%= doc.assignee_name %></span>
+      <% } %>
+    </div>
+    <div class="doc-card-date"><%= new Date(doc.updated_at).toLocaleString('ru-RU') %></div>
+  </a>
+  <% }) %>
+</div>
+<% } %>

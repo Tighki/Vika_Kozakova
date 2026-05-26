@@ -1,0 +1,94 @@
+<div class="page-header">
+  <div>
+    <h1><%= document.title %></h1>
+    <p class="page-subtitle"><%= document.doc_number %></p>
+  </div>
+  <div class="header-actions">
+    <% if (canEdit) { %>
+    <a href="/documents/<%= document.id %>/edit" class="btn btn-secondary">Редактировать</a>
+    <% } %>
+    <a href="/documents" class="btn btn-ghost">← К списку</a>
+  </div>
+</div>
+
+<div class="doc-detail-grid">
+  <div class="doc-detail-main">
+    <div class="detail-card">
+      <div class="detail-badges">
+        <span class="badge badge-<%= document.status %>"><%= statusLabels[document.status] %></span>
+        <span class="badge badge-type"><%= typeLabels[document.type] %></span>
+      </div>
+
+      <div class="detail-meta-grid">
+        <div class="detail-item">
+          <span class="detail-label">Автор</span>
+          <span class="detail-value"><%= document.author_name %></span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Исполнитель</span>
+          <span class="detail-value"><%= document.assignee_name || '—' %></span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Создан</span>
+          <span class="detail-value"><%= new Date(document.created_at).toLocaleString('ru-RU') %></span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Обновлён</span>
+          <span class="detail-value"><%= new Date(document.updated_at).toLocaleString('ru-RU') %></span>
+        </div>
+      </div>
+
+      <h3>Содержание</h3>
+      <div class="doc-content"><%= document.content || '—' %></div>
+    </div>
+
+    <% if (document.status === 'draft' && (user.role === 'admin' || document.author_id === user.id)) { %>
+    <form method="POST" action="/documents/<%= document.id %>/submit" class="action-card">
+      <p>Документ в статусе черновика. Отправьте на согласование.</p>
+      <button type="submit" class="btn btn-primary">Отправить на согласование</button>
+    </form>
+    <% } %>
+
+    <% if (user.role === 'admin' && document.status === 'pending') { %>
+    <div class="action-card admin-actions">
+      <h3>Решение администратора</h3>
+      <form method="POST" action="/documents/<%= document.id %>/status" class="status-form">
+        <input type="hidden" name="status" value="approved">
+        <div class="form-group">
+          <label>Комментарий (необязательно)</label>
+          <input type="text" name="comment" placeholder="Комментарий к утверждению">
+        </div>
+        <button type="submit" class="btn btn-success">Утвердить</button>
+      </form>
+      <form method="POST" action="/documents/<%= document.id %>/status" class="status-form">
+        <input type="hidden" name="status" value="rejected">
+        <div class="form-group">
+          <label>Причина отклонения</label>
+          <input type="text" name="comment" placeholder="Укажите причину" required>
+        </div>
+        <button type="submit" class="btn btn-danger">Отклонить</button>
+      </form>
+    </div>
+    <% } %>
+  </div>
+
+  <div class="doc-detail-side">
+    <div class="detail-card">
+      <h3>История действий</h3>
+      <% if (!history.length) { %>
+      <p class="text-muted">История пуста</p>
+      <% } else { %>
+      <ul class="history-list">
+        <% history.forEach(h => { %>
+        <li class="history-item">
+          <div class="history-action"><%= h.action %></div>
+          <div class="history-user"><%= h.user_name %></div>
+          <% if (h.comment) { %><div class="history-comment"><%= h.comment %></div><% } %>
+          <div class="history-date"><%= new Date(h.created_at).toLocaleString('ru-RU') %></div>
+        </li>
+        <% }) %>
+      </ul>
+      <% } %>
+    </div>
+  </div>
+</div>

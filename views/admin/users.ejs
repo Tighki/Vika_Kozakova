@@ -1,0 +1,57 @@
+<div class="page-header">
+  <div>
+    <h1>Пользователи</h1>
+    <p class="page-subtitle">Управление учётными записями</p>
+  </div>
+</div>
+
+<div class="detail-card">
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>ФИО</th>
+        <th>Email</th>
+        <th>Роль</th>
+        <th>Статус</th>
+        <th>Регистрация</th>
+        <th>Действия</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% users.forEach(u => { %>
+      <tr class="<%= u.is_active ? '' : 'row-inactive' %>">
+        <td><%= u.full_name %></td>
+        <td><%= u.email %></td>
+        <td>
+          <span class="badge <%= u.role === 'admin' ? 'badge-admin' : 'badge-user' %>">
+            <%= u.role === 'admin' ? 'Администратор' : 'Пользователь' %>
+          </span>
+        </td>
+        <td>
+          <span class="badge <%= u.is_active ? 'badge-approved' : 'badge-rejected' %>">
+            <%= u.is_active ? 'Активен' : 'Заблокирован' %>
+          </span>
+        </td>
+        <td><%= new Date(u.created_at).toLocaleDateString('ru-RU') %></td>
+        <td class="actions-cell">
+          <% if (u.id !== user.id) { %>
+          <form method="POST" action="/admin/users/<%= u.id %>/role" class="inline-form">
+            <select name="role" onchange="this.form.submit()">
+              <option value="user" <%= u.role === 'user' ? 'selected' : '' %>>User</option>
+              <option value="admin" <%= u.role === 'admin' ? 'selected' : '' %>>Admin</option>
+            </select>
+          </form>
+          <form method="POST" action="/admin/users/<%= u.id %>/toggle" class="inline-form">
+            <button type="submit" class="btn btn-sm <%= u.is_active ? 'btn-danger' : 'btn-success' %>">
+              <%= u.is_active ? 'Блокировать' : 'Разблокировать' %>
+            </button>
+          </form>
+          <% } else { %>
+          <span class="text-muted">Это вы</span>
+          <% } %>
+        </td>
+      </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</div>

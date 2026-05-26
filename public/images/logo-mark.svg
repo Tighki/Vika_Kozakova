@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" role="img" aria-label="DocFlow">
+  <defs>
+    <linearGradient id="df-bg" x1="4" y1="4" x2="44" y2="44" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#3028de"/>
+      <stop offset="1" stop-color="#514afd"/>
+    </linearGradient>
+    <linearGradient id="df-flow" x1="14" y1="26" x2="34" y2="26" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#c8c4ff"/>
+    </linearGradient>
+  </defs>
+  <rect width="48" height="48" rx="12" fill="url(#df-bg)"/>
+  <path d="M15 13h14.5L33 16.5V33a2.5 2.5 0 0 1-2.5 2.5H15A2.5 2.5 0 0 1 12.5 33V15.5A2.5 2.5 0 0 1 15 13z" fill="#fff" fill-opacity=".96"/>
+  <path d="M29.5 13v4.5H34" stroke="#847ef5" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M17 22.5h6.5" stroke="#3028de" stroke-width="1.5" stroke-linecap="round" opacity=".35"/>
+  <path d="M17 27h10" stroke="#3028de" stroke-width="1.5" stroke-linecap="round" opacity=".25"/>
+  <path d="M17 31.5h7.5" stroke="#3028de" stroke-width="1.5" stroke-linecap="round" opacity=".2"/>
+  <circle cx="31" cy="28" r="7" fill="#847ef5" fill-opacity=".35"/>
+  <path d="M27.5 28h5.5M30.25 25.25 33 28l-2.75 2.75" stroke="url(#df-flow)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

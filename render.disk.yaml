@@ -1,0 +1,21 @@
+# Опционально: конфигурация с постоянным диском (платный инстанс Render).
+# Скопируйте содержимое в render.yaml или добавьте Disk вручную в панели.
+services:
+  - type: web
+    name: docflow
+    runtime: node
+    plan: starter
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: DATA_DIR
+        value: /var/data
+    disk:
+      name: docflow-data
+      mountPath: /var/data
+      sizeGB: 1

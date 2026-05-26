@@ -1,0 +1,15 @@
+# Blueprint для деплоя на Render: https://render.com/docs/blueprint-spec
+# Работает на Free-плане. Для постоянного хранения SQLite подключите Disk в панели Render.
+services:
+  - type: web
+    name: docflow
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: SESSION_SECRET
+        generateValue: true

@@ -1,0 +1,63 @@
+<div class="page-header">
+  <div>
+    <h1>Панель администратора</h1>
+    <p class="page-subtitle">Обзор системы документооборота</p>
+  </div>
+</div>
+
+<div class="stats-grid">
+  <div class="stat-card">
+    <div class="stat-value"><%= totalDocs %></div>
+    <div class="stat-label">Всего документов</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-value"><%= totalUsers %></div>
+    <div class="stat-label">Пользователей</div>
+  </div>
+  <div class="stat-card stat-draft">
+    <div class="stat-value"><%= stats.draft %></div>
+    <div class="stat-label"><%= statusLabels.draft %></div>
+  </div>
+  <div class="stat-card stat-pending">
+    <div class="stat-value"><%= stats.pending %></div>
+    <div class="stat-label"><%= statusLabels.pending %></div>
+  </div>
+  <div class="stat-card stat-approved">
+    <div class="stat-value"><%= stats.approved %></div>
+    <div class="stat-label"><%= statusLabels.approved %></div>
+  </div>
+  <div class="stat-card stat-rejected">
+    <div class="stat-value"><%= stats.rejected %></div>
+    <div class="stat-label"><%= statusLabels.rejected %></div>
+  </div>
+</div>
+
+<div class="detail-card">
+  <h3>Последние документы</h3>
+  <% if (!recentDocs.length) { %>
+  <p class="text-muted">Документов пока нет</p>
+  <% } else { %>
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>Номер</th>
+        <th>Название</th>
+        <th>Автор</th>
+        <th>Статус</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% recentDocs.forEach(doc => { %>
+      <tr>
+        <td><%= doc.doc_number %></td>
+        <td><%= doc.title %></td>
+        <td><%= doc.author_name %></td>
+        <td><span class="badge badge-<%= doc.status %>"><%= statusLabels[doc.status] %></span></td>
+        <td><a href="/documents/<%= doc.id %>" class="link">Открыть</a></td>
+      </tr>
+      <% }) %>
+    </tbody>
+  </table>
+  <% } %>
+</div>

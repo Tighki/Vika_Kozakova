@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title %> — DocFlow</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a href="/documents" class="sidebar-brand">
+        <%- include('partials/logo', { variant: 'mark', className: 'logo-sidebar' }) %>
+        <span class="brand-text">DocFlow</span>
+      </a>
+      <nav class="sidebar-nav">
+        <a href="/documents" class="nav-link <%= title === 'Документы' ? 'active' : '' %>">
+          <%- include('partials/icon', { icon: 'documents' }) %>
+          <span class="nav-label">Документы</span>
+        </a>
+        <a href="/documents/new" class="nav-link">
+          <%- include('partials/icon', { icon: 'plus' }) %>
+          <span class="nav-label">Новый документ</span>
+        </a>
+        <% if (user && user.role === 'admin') { %>
+        <div class="nav-divider"></div>
+        <a href="/admin/dashboard" class="nav-link <%= title === 'Панель администратора' ? 'active' : '' %>">
+          <%- include('partials/icon', { icon: 'chart' }) %>
+          <span class="nav-label">Дашборд</span>
+        </a>
+        <a href="/admin/users" class="nav-link <%= title === 'Пользователи' ? 'active' : '' %>">
+          <%- include('partials/icon', { icon: 'users' }) %>
+          <span class="nav-label">Пользователи</span>
+        </a>
+        <% } %>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="user-info">
+          <div class="user-avatar"><%= user.full_name.charAt(0).toUpperCase() %></div>
+          <div>
+            <div class="user-name"><%= user.full_name %></div>
+            <div class="user-role"><%= user.role === 'admin' ? 'Администратор' : 'Пользователь' %></div>
+          </div>
+        </div>
+        <form action="/logout" method="POST">
+          <button type="submit" class="btn btn-ghost btn-sm btn-icon-text" title="Выйти">
+            <%- include('partials/icon', { icon: 'logout', iconSize: 16 }) %>
+            <span class="btn-label">Выйти</span>
+          </button>
+        </form>
+      </div>
+    </aside>
+    <main class="main-content">
+      <div class="page-container">
+        <% if (flash) { %>
+        <div class="toast toast-<%= flash.type %>"><%= flash.message %></div>
+        <% } %>
+        <%- body %>
+      </div>
+    </main>
+  </div>
+  <script src="/js/validation.js"></script>
+</body>
+</html>
