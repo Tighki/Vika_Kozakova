@@ -80,8 +80,9 @@ app.use((req, res) =>
   })
 );
 
-app.use((err, _req, res, _next) => {
-  console.error(err);
+app.use((err, req, res, _next) => {
+  console.error(err.stack || err);
+  if (res.headersSent) return _next(err);
   res.status(500).render('error', {
     layout: false,
     title: 'Ошибка сервера',
